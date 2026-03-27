@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // base: '/inventory/',   // <<< ADD THIS LINE
+  base: '/attendance/',   // <<< ADD THIS LINE
   server: {
     port: 3000,
   },
