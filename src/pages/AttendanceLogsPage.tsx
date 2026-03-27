@@ -1,0 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../api/client";
+export default function AttendanceLogsPage() {
+  const query = useQuery({ queryKey: ["attendance-logs"], queryFn: async () => (await api.get("/attendance/logs")).data });
+  const syncMock = async () => { const res = await api.post("/attendance/mock-sync"); alert(res.data.message || "Mock sync completed"); await query.refetch(); };
+  return <div><div className="mb-4 flex items-center justify-between"><h2 className="text-2xl font-bold">Attendance Logs</h2><button onClick={syncMock} className="rounded bg-blue-600 px-4 py-2 text-white">Mock Sync Logs</button></div><div className="overflow-auto rounded-xl bg-white shadow"><table className="w-full"><thead><tr className="bg-slate-100"><th className="p-3 text-left">Employee</th><th className="p-3 text-left">Device</th><th className="p-3 text-left">Time</th><th className="p-3 text-left">Verify Type</th><th className="p-3 text-left">Source</th><th className="p-3 text-left">Direction</th></tr></thead><tbody>{(query.data || []).map((item: any) => <tr key={item.id} className="border-t"><td className="p-3">{item.employee ? `${item.employee.firstName} ${item.employee.lastName}` : item.deviceUserId || "-"}</td><td className="p-3">{item.device?.name || "-"}</td><td className="p-3">{new Date(item.logTime).toLocaleString()}</td><td className="p-3">{item.verifyType}</td><td className="p-3">{item.source}</td><td className="p-3">{item.direction || "-"}</td></tr>)}</tbody></table></div></div>;
+}
