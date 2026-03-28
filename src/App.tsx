@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardPage from "./pages/DashboardPage";
@@ -16,29 +15,24 @@ import ReportsPage from "./pages/ReportsPage";
 import RolesPage from "./pages/RolesPage";
 
 const App: React.FC = () => {
-    return (
-        // <Router>
-        <BrowserRouter basename="/attendance">
-          <Routes>
-            <Route path="/" element={<DashboardLayout />}>
-              <Route index element={<DashboardPage />} />
-              <Route path="employees" element={<EmployeesPage />} />
-              <Route path="departments" element={<DepartmentsPage />} />
-              <Route path="shifts" element={<ShiftsPage />} />
-              <Route path="devices" element={<DevicesPage />} />
-              <Route path="attendance-logs" element={<AttendanceLogsPage />} />
-              <Route path="daily-attendance" element={<DailyAttendancePage />} />
-              <Route path="face-attendance" element={<FaceAttendancePage />} />
-              <Route path="face-enroll" element={<FaceEnrollPage />} />
-              <Route path="reports" element={<ReportsPage />} />
-              <Route path="roles" element={<RolesPage />} />
-              
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-        // </Router>
-    );
+  return (
+    <Routes>
+      <Route path="/" element={<DashboardLayout />}>
+        <Route index element={<DashboardPage />} />
+        <Route path="employees" element={<EmployeesPage />} />
+        <Route path="departments" element={<DepartmentsPage />} />
+        <Route path="shifts" element={<ShiftsPage />} />
+        <Route path="devices" element={<DevicesPage />} />
+        <Route path="attendance-logs" element={<AttendanceLogsPage />} />
+        <Route path="daily-attendance" element={<DailyAttendancePage />} />
+        <Route path="face-attendance" element={<FaceAttendancePage />} />
+        <Route path="face-enroll" element={<FaceEnrollPage />} />
+        <Route path="reports" element={<ReportsPage />} />
+        <Route path="roles" element={<RolesPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
+  );
 };
 
 export default App;
