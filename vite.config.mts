@@ -3,9 +3,6 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  base: "/attendance/",
   plugins: [react(), tailwindcss()],
-  base: '/attendance/',   // <<< ADD THIS LINE
-  server: {
-    port: 3000,
-  },
 });

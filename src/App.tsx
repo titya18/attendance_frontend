@@ -18,7 +18,7 @@ import RolesPage from "./pages/RolesPage";
 const App: React.FC = () => {
     return (
         // <Router>
-        <BrowserRouter basename="/inventory">
+        <BrowserRouter basename="/attendance">
           <Routes>
             <Route path="/" element={<DashboardLayout />}>
               <Route index element={<DashboardPage />} />
