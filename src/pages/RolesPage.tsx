@@ -3,11 +3,24 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../api/client";
 import PageHeader from "../components/ui/PageHeader";
 import ConfirmDeleteButton from "../components/ui/ConfirmDeleteButton";
+import { toArray } from "../utils/api";
 
 export default function RolesPage() {
   const [open, setOpen] = useState(false); const [editing, setEditing] = useState<any>(null); const [name, setName] = useState(""); const [description, setDescription] = useState(""); const [permissionIds, setPermissionIds] = useState<number[]>([]);
-  const rolesQuery = useQuery({ queryKey: ["roles"], queryFn: async () => (await api.get("/roles")).data });
-  const permissionsQuery = useQuery({ queryKey: ["permissions"], queryFn: async () => (await api.get("/permissions")).data });
+  const rolesQuery = useQuery({
+      queryKey: ["roles"],
+      queryFn: async () => {
+        const res = await api.get("/roles");
+        return toArray(res.data);
+      },
+  }); 
+  const permissionsQuery = useQuery({
+      queryKey: ["permissions"],
+      queryFn: async () => {
+        const res = await api.get("/permissions");
+        return toArray(res.data);
+      },
+  }); 
   const permissionOptions = permissionsQuery.data || []; const selectedCodes = useMemo(() => new Set(permissionIds), [permissionIds]);
   const resetForm = () => { setName(""); setDescription(""); setPermissionIds([]); setEditing(null); };
   const openAdd = () => { resetForm(); setOpen(true); };

@@ -5,9 +5,16 @@ import DeviceModal from "../components/modals/DeviceModal";
 import ConfirmDeleteButton from "../components/ui/ConfirmDeleteButton";
 import PageHeader from "../components/ui/PageHeader";
 import { Device } from "../types";
+import { toArray } from "../utils/api";
 export default function DevicesPage() {
   const [open, setOpen] = useState(false); const [editing, setEditing] = useState<Device | undefined>(undefined);
-  const query = useQuery({ queryKey: ["devices"], queryFn: async () => (await api.get("/devices")).data });
+  const query = useQuery({
+    queryKey: ["devices"],
+    queryFn: async () => {
+      const res = await api.get("/devices");
+      return toArray(res.data);
+    },
+  });
   const removeItem = async (id: number) => { await api.delete(`/devices/${id}`); await query.refetch(); };
   const syncDevice = async (id: number) => { const res = await api.post(`/devices/${id}/sync`); alert(res.data.message || "Device synced successfully"); await query.refetch(); };
   const testConnection = async (id: number) => { const res = await api.post(`/devices/${id}/test-connection`); alert(res.data.message || "Connection successful"); };

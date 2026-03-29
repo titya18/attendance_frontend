@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import * as faceapi from "face-api.js";
 import { api } from "../api/client";
+import { toArray } from "../utils/api";
 
 type EmployeeOption = {
   id: number;
@@ -26,7 +27,10 @@ export default function FaceAttendancePage() {
 
   const employeesQuery = useQuery({
     queryKey: ["face-attendance-employees"],
-    queryFn: async () => (await api.get("/employees")).data as EmployeeOption[],
+    queryFn: async () => {
+      const res = await api.get("/employees");
+      return toArray(res.data);
+    },
   });
 
   const loadModels = async () => {

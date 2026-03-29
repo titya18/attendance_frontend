@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { api } from "../api/client";
+import { toArray } from "../utils/api";
 
 export default function ReportsPage() {
   const today = new Date();
@@ -13,15 +14,22 @@ export default function ReportsPage() {
   const [to, setTo] = useState(currentDay); 
   const [employeeId, setEmployeeId] = useState("");
   const employeesQuery = useQuery({ queryKey: ["report-employees"], 
-    queryFn: async () => (await api.get("/employees")).data });
-  const reportQuery = useQuery({ queryKey: ["attendance-report", from, to, employeeId], 
-    queryFn: async () => { 
-      const params = new URLSearchParams(); 
-      params.set("from", from); 
-      params.set("to", to); 
-      if (employeeId) params.set("employeeId", employeeId); 
-      return (await api.get(`/reports/attendance?${params.toString()}`)).data; 
+    queryFn: async () => {
+      const res = await api.get("/employees");
+      return toArray(res.data);
     } });
+  const reportQuery = useQuery({
+    queryKey: ["attendance-report", from, to, employeeId],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      params.set("from", from);
+      params.set("to", to);
+      if (employeeId) params.set("employeeId", employeeId);
+
+      const res = await api.get(`/reports/attendance?${params.toString()}`);
+      return res.data; // ✅ DO NOT use toArray here
+    }
+  });
   const rows = reportQuery.data?.rows || []; 
   const summary = reportQuery.data?.summary || { totalRecords: 0, totalPresent: 0, totalLate: 0, totalAbsent: 0 };
   const tableData = useMemo(() => rows.map((item: any) => ({ 

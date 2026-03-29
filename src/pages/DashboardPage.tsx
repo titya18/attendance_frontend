@@ -1,7 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar } from "recharts";
 import { api } from "../api/client";
-function Card({ title, value }: { title: string; value: string | number }) { return <div className="rounded-xl bg-white p-5 shadow"><div className="text-sm text-gray-500">{title}</div><div className="mt-2 text-2xl font-bold">{value}</div></div>; }
+import { toArray } from "../utils/api";
+function Card({ title, value }: { title: string; value: string | number }) { 
+  return <div className="rounded-xl bg-white p-5 shadow">
+            <div className="text-sm text-gray-500">{title}</div>
+            <div className="mt-2 text-2xl font-bold">{value}</div>
+          </div>; }
 export default function DashboardPage() {
   const summaryQuery = useQuery({ queryKey: ["dashboard-summary"], queryFn: async () => (await api.get("/dashboard/summary")).data });
   const data = summaryQuery.data || { totalEmployees: 0, totalDevices: 0, todayLogs: 0, todayPresent: 0, chart: [] };
